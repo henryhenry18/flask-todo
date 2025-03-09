@@ -1,0 +1,325 @@
+/* Spider-Man Color Theme */
+body {
+    background-image: url("https://wallpapercave.com/wp/wp3292705.jpg");
+    background-size: cover;
+    background-position: center;
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    color: white;
+    text-align: center;
+}
+
+/* Spider-Man Themed Header */
+.spiderman-text {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: red;
+    text-shadow: 2px 2px 5px black;
+}
+
+/* Custom Input Styling */
+.spiderman-input {
+    border: 2px solid red;
+    border-radius: 5px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.8);
+    font-size: 1.2rem;
+}
+
+/* Custom Add Button */
+.spiderman-btn {
+    background-color: red;
+    color: white;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    padding: 10px 15px;
+    transition: 0.3s ease-in-out;
+}
+.spiderman-btn:hover {
+    background-color: black;
+}
+
+/* Task List Styling */
+.task-item {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    border: 2px solid red;
+    font-size: 1.2rem;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+/* Completed Task Styling */
+.completed-task {
+    text-decoration: line-through;
+    color: gray !important;
+    opacity: 0.7;
+}
+
+/* SweetAlert Custom Styling */
+.swal2-title {
+    color: red !important;
+    text-shadow: 2px 2px black;
+}
+.swal2-confirm {
+    background-color: red !important;
+}
+.swal2-cancel {
+    background-color: black !important;
+}
+/* Apply Comic Book Font */
+body, .spiderman-text, .task-item, .spiderman-btn {
+    font-family: 'Bangers', cursive;
+}
+/* Task Fade-in Animation */
+.task-item {
+    animation: fadeIn 0.5s ease-in-out;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Task Completion Animation */
+.completed-task {
+    animation: strikeThrough 0.5s ease-in-out;
+}
+@keyframes strikeThrough {
+    from { text-decoration: none; color: white; }
+    to { text-decoration: line-through; color: gray; opacity: 0.7; }
+}
+
+/* Task Deletion Animation */
+.task-item.removed {
+    animation: fadeOut 0.5s ease-in-out forwards;
+}
+@keyframes fadeOut {
+    from { opacity: 1; transform: translateX(0); }
+    to { opacity: 0; transform: translateX(-20px); }
+}
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+    .container {
+        width: 95%;
+        padding: 10px;
+    }
+    .spiderman-text {
+        font-size: 2rem;
+    }
+    .spiderman-input, .spiderman-btn {
+        font-size: 1rem;
+    }
+    .task-item {
+        font-size: 1rem;
+        padding: 10px;
+    }
+    .task-item div {
+        display: flex;
+        flex-direction: column;
+    }
+}
+/* Animated Buttons */
+.spiderman-btn {
+    background-color: red;
+    color: white;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    padding: 10px 15px;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s;
+}
+.spiderman-btn:hover {
+    background-color: black;
+    transform: scale(1.1);
+    box-shadow: 0px 0px 10px white;
+}
+
+/* Hover Effect for Tasks */
+.task-item:hover {
+    transform: scale(1.02);
+    transition: transform 0.2s ease-in-out;
+    box-shadow: 0px 0px 10px red;
+}
+/* Custom Spider-Man Cursor */
+body {
+    cursor: url('https://cur.cursors-4u.net/nature/nat-9/nat840.cur'), auto;
+}
+/* Dark Mode Styling */
+.dark-mode {
+    background-color: black !important;
+    color: red !important;
+}
+.dark-mode .task-item {
+    background-color: #222 !important;
+    border-color: red !important;
+}
+.dark-mode .spiderman-btn {
+    background-color: red !important;
+    color: black !important;
+}
+.dark-mode-toggle {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: black;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 1rem;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+.dark-mode-toggle:hover {
+    background-color: red;
+}
+/* Smooth Dark Mode Transition */
+body {
+    transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+}
+.dark-mode-toggle {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: black;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-radius: 20px;
+    transition: 0.3s ease-in-out;
+}
+
+.dark-mode-toggle:hover {
+    background-color: red;
+    transform: scale(1.1);
+}
+/* Moving Web Background */
+@keyframes moveWeb {
+    0% { background-position: 0% 0%; }
+    50% { background-position: 100% 100%; }
+    100% { background-position: 0% 0%; }
+}
+
+body {
+    background: url("https://wallpapercave.com/wp/wp3292705.jpg");
+    background-size: cover;
+    animation: moveWeb 15s infinite alternate ease-in-out;
+}
+
+/* Resize and Adjust Spider Logo */
+.spinning-spider {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px !important;  /* Smaller size */
+    height: 20px !important; /* Keep it proportional */
+    opacity: 0.8;
+    animation: spin 10s linear infinite;
+}
+
+
+@keyframes spin {
+    from { transform: translateX(-50%) rotate(0deg); }
+    to { transform: translateX(-50%) rotate(360deg); }
+}
+
+/* Dark Mode Task Cards */
+.dark-mode .task-item {
+    background-color: rgba(255, 0, 0, 0.2) !important;  /* Dark Red */
+    border-color: white !important;
+    color: white !important;
+}
+
+/* Add a Glowing Effect in Dark Mode */
+.dark-mode .task-item:hover {
+    box-shadow: 0px 0px 15px red;
+    transform: scale(1.05);
+    transition: 0.3s ease-in-out;
+}
+
+/* Web Covering Effect */
+#web-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: url("https://www.pngmart.com/files/22/Spider-Web-PNG-Image.png") center/cover no-repeat;
+    z-index: 1000;
+    animation: fadeWeb 2s ease-in-out forwards;
+}
+
+@keyframes fadeWeb {
+    0% { opacity: 1; transform: scale(1.5); }
+    100% { opacity: 0; transform: scale(1); }
+}
+
+/* Task Fade-In Animation */
+.task-item {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Web Dissolving Animation */
+.web-away {
+    animation: shrinkAway 0.5s ease-in-out forwards;
+}
+
+@keyframes shrinkAway {
+    from { opacity: 1; transform: scale(1); }
+    to { opacity: 0; transform: scale(0.5); }
+}
+
+/* Spider Glow Hover Effect */
+.task-item:hover {
+    box-shadow: 0px 0px 15px red;
+    transform: scale(1.02);
+    transition: 0.3s ease-in-out;
+}
+
+/* Completed Task Effect */
+.completed-task {
+    animation: vanish 0.8s ease-in-out alternate infinite;
+}
+
+@keyframes vanish {
+    0% { opacity: 1; }
+    100% { opacity: 0.3; }
+}
+
+/* Task Explosion Effect */
+.explode {
+    animation: explodeEffect 0.7s ease-out forwards;
+}
+
+@keyframes explodeEffect {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2) rotate(10deg); opacity: 0.5; }
+    100% { transform: scale(0) rotate(-10deg); opacity: 0; }
+}
+/* Spider-Web Progress Bar */
+.progress-container {
+    width: 100%;
+    height: 15px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    border: 2px solid red;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;  /* Starts empty */
+    background: repeating-linear-gradient(45deg, red, black 10px);
+    transition: width 0.5s ease-in-out;
+}

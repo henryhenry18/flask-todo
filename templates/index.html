@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spider-Man To-Do List</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+
+</head>
+<div id="web-overlay"></div>
+
+<body>
+    <button id="darkModeToggle" class="dark-mode-toggle">🌞 Light Mode</button>
+
+    <div class="container mt-5 text-center">
+        <h1 class="spiderman-text">🕷️ Spider-Man To-Do List 🕸️</h1>
+
+        <!-- Add Task Form -->
+        <form action="{{ url_for('add_task') }}" method="post" class="d-flex my-3">
+            <input type="text" name="task" class="form-control spiderman-input" placeholder="Enter a task..." required>
+            <button type="submit" class="btn spiderman-btn" onclick="playSound('addSound')">Add Task</button>
+        </form>
+
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        
+
+        <!-- Task List -->
+        <ul class="list-group">
+            {% if tasks %}
+                {% for task in tasks %}
+                <li class="list-group-item task-item {% if task.completed %}completed-task{% endif %}">
+                    <span>{{ task.task }}</span>
+                    <div>
+                        {% if not task.completed %}
+                        <a href="#" onclick="explodeTask(this, '{{ url_for('complete_task', task_id=task.id) }}')" class="btn btn-success btn-sm">
+                            ✔ Complete
+                        </a>
+                        
+                        
+                        {% endif %}
+                        <a href="#" onclick="confirmDelete(this, '{{ url_for('delete_task', task_id=task.id) }}')" class="btn btn-danger btn-sm">
+                            🗑 Delete
+                        </a>
+                        
+                        
+                            
+                        </a>
+                    </div>
+                </li>
+                {% endfor %}
+            {% else %}
+                <li class="list-group-item text-center">No tasks found. Add some!</li>
+            {% endif %}
+        </ul>
+    </div>
+
+    <script>
+        function confirmDelete(element, url) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to undo this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let taskItem = element.closest(".task-item");
+                    taskItem.classList.add("web-away");  // Apply animation
+                    setTimeout(() => { window.location.href = url; }, 500);
+                }
+            });
+        }
+    </script>
+    
+
+<script>
+    function toggleDarkMode() {
+        document.body.classList.toggle("dark-mode");
+
+        // Toggle button text and icon
+        let btn = document.getElementById("darkModeToggle");
+        if (document.body.classList.contains("dark-mode")) {
+            localStorage.setItem("darkMode", "enabled");
+            btn.innerHTML = "🌙 Dark Mode";
+        } else {
+            localStorage.setItem("darkMode", "disabled");
+            btn.innerHTML = "🌞 Light Mode";
+        }
+    }
+
+    // Apply Dark Mode if previously enabled
+    document.addEventListener("DOMContentLoaded", function () {
+        let btn = document.getElementById("darkModeToggle");
+        if (localStorage.getItem("darkMode") === "enabled") {
+            document.body.classList.add("dark-mode");
+            btn.innerHTML = "🌙 Dark Mode";
+        }
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let btn = document.getElementById("darkModeToggle");
+
+        // Check if Local Storage is supported
+        if (typeof(Storage) !== "undefined") {
+            if (localStorage.getItem("darkMode") === "enabled") {
+                document.body.classList.add("dark-mode");
+                btn.innerHTML = "🌙 Dark Mode";
+            }
+        } else {
+            console.warn("Local Storage not supported in this browser.");
+        }
+    });
+</script>
+
+<script>
+    function explodeTask(element, url) {
+        let taskItem = element.closest(".task-item");
+        taskItem.classList.add("explode");  // Apply explosion effect
+
+        setTimeout(() => {
+            window.location.href = url;
+        }, 700);  // Redirect after animation
+    }
+</script>
+
+<script>
+    function updateProgressBar() {
+        let totalTasks = document.querySelectorAll(".task-item").length;
+        let completedTasks = document.querySelectorAll(".completed-task").length;
+        let progress = (completedTasks / totalTasks) * 100 || 0;  // Avoid NaN when no tasks
+
+        document.getElementById("progress-bar").style.width = progress + "%";
+    }
+
+    // Call function on page load
+    document.addEventListener("DOMContentLoaded", updateProgressBar);
+</script>
+
+
+
+</body>
+</html>
