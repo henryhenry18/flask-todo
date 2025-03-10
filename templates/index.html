@@ -13,17 +13,42 @@
 </head>
 <div id="web-overlay"></div>
 
+<script>
+    function checkAlarms() {
+        let tasks = document.querySelectorAll(".task-item");
+
+        tasks.forEach(task => {
+            let reminderTime = task.getAttribute("data-reminder");
+            if (reminderTime) {
+                let reminderDate = new Date(reminderTime);
+                let now = new Date();
+
+                if (now >= reminderDate) {
+                    alert("⏰ Reminder: " + task.querySelector("span").innerText);
+                }
+            }
+        });
+    }
+
+    setInterval(checkAlarms, 60000); // Check every minute
+</script>
+
+
 <body>
-    <button id="darkModeToggle" class="dark-mode-toggle">🌞 Light Mode</button>
+    <button id="darkModeToggle" class="dark-mode-toggle">🌙 Dark Mode</button>
 
     <div class="container mt-5 text-center">
         <h1 class="spiderman-text">🕷️ Spider-Man To-Do List 🕸️</h1>
 
         <!-- Add Task Form -->
-        <form action="{{ url_for('add_task') }}" method="post" class="d-flex my-3">
-            <input type="text" name="task" class="form-control spiderman-input" placeholder="Enter a task..." required>
-            <button type="submit" class="btn spiderman-btn" onclick="playSound('addSound')">Add Task</button>
+        <form action="{{ url_for('add_task') }}" method="POST">
+            <input type="text" name="task_text" placeholder="Enter your task" required>
+            <button type="submit">Add Task</button>
         </form>
+        
+        
+        
+        
 
         <div class="progress-container">
             <div class="progress-bar" id="progress-bar"></div>
@@ -32,31 +57,26 @@
 
         <!-- Task List -->
         <ul class="list-group">
-            {% if tasks %}
-                {% for task in tasks %}
-                <li class="list-group-item task-item {% if task.completed %}completed-task{% endif %}">
-                    <span>{{ task.task }}</span>
-                    <div>
-                        {% if not task.completed %}
-                        <a href="#" onclick="explodeTask(this, '{{ url_for('complete_task', task_id=task.id) }}')" class="btn btn-success btn-sm">
+            {% for task in tasks %}
+            <li class="list-group-item task-item {% if task.completed %}completed-task{% endif %}">
+                <span>{{ task.task }}</span>
+            <div>
+                    {% if not task.completed %}
+                        <a href="{{ url_for('complete_task', task_id=task.id) }}" class="btn btn-success btn-sm">
                             ✔ Complete
                         </a>
-                        
-                        
-                        {% endif %}
-                        <a href="#" onclick="confirmDelete(this, '{{ url_for('delete_task', task_id=task.id) }}')" class="btn btn-danger btn-sm">
-                            🗑 Delete
-                        </a>
-                        
-                        
-                            
-                        </a>
-                    </div>
-                </li>
+                    {% endif %}
+                    <a href="{{ url_for('delete_task', task_id=task.id) }}" class="btn btn-danger btn-sm">
+                        🗑 Delete
+                    </a>
+                </div>
+            </li>
+        </ul>
+        
                 {% endfor %}
-            {% else %}
+            
                 <li class="list-group-item text-center">No tasks found. Add some!</li>
-            {% endif %}
+            
         </ul>
     </div>
 
@@ -145,6 +165,31 @@
     // Call function on page load
     document.addEventListener("DOMContentLoaded", updateProgressBar);
 </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let darkModeToggle = document.getElementById("darkModeToggle");
+
+        // Check if Dark Mode was previously enabled
+        if (localStorage.getItem("darkMode") === "enabled") {
+            document.body.classList.add("dark-mode");
+            darkModeToggle.innerHTML = "🌞 Light Mode";
+        }
+
+        darkModeToggle.addEventListener("click", function () {
+            document.body.classList.toggle("dark-mode");
+
+            if (document.body.classList.contains("dark-mode")) {
+                localStorage.setItem("darkMode", "enabled");
+                darkModeToggle.innerHTML = "🌞 Light Mode";
+            } else {
+                localStorage.setItem("darkMode", "disabled");
+                darkModeToggle.innerHTML = "🌙 Dark Mode";
+            }
+        });
+    });
+</script>
+
 
 
 

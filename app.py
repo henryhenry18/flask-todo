@@ -3,12 +3,15 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask_bcrypt import Bcrypt
 import sqlite3
-
+from flask import Flask
+from datetime import datetime
+from flask_migrate import Migrate
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todo.db'  # Ensure this is correct
 app.config["SECRET_KEY"] = "your_secret_key"  # Change this to a secure key
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -40,37 +43,38 @@ init_db()  # Run once to create the DB
 
 # Home Route - Show Tasks
 @app.route("/")
-@login_required
 def index():
-    tasks = Task.query.filter_by(user_id=current_user.id).all()
-    print("DEBUG: Tasks fetched from database:", tasks)  # Print tasks in terminal
+    tasks = Task.query.all()
     return render_template("index.html", tasks=tasks)
 
 
-
-
 # Add Task
+# ✅ Route to handle form submission
 @app.route("/add", methods=["POST"])
-@login_required
 def add_task():
-    task = request.form["task"]
-    if task:
-        new_task = Task(task=task, completed=False, user_id=current_user.id)
+    task_text = request.form.get("task_text")
 
-        db.session.add(new_task)
-        db.session.commit()
+    print("🔥 Debug: Task received ->", task_text)  # ✅ Print the received task
+
+    if not task_text or not task_text.strip():  # 🔴 Check for empty tasks
+        flash("Error: Task cannot be empty!", "danger")
+        return redirect(url_for("index"))
+
+    new_task = Task(task=task_text, user_id=current_user.id)  # ✅ Make sure user_id is set
+    db.session.add(new_task)
+    db.session.commit()
+
+    flash("Task added successfully!", "success")
     return redirect(url_for("index"))
 
-
-# Mark Task as Completed
 @app.route("/complete/<int:task_id>")
-@login_required
 def complete_task(task_id):
     task = Task.query.get(task_id)
-    if task and task.user_id == current_user.id:
+    if task:
         task.completed = True
         db.session.commit()
     return redirect(url_for("index"))
+
 
 
 # Delete Task
@@ -84,9 +88,14 @@ def delete_task(task_id):
     return redirect(url_for("index"))
 
 
+# Initialize Flask-Login
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+# Define how to load users from the database
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    return User.query.get(int(user_id))  # ✅ This must be in app.py
 
 
 @app.route("/signup", methods=["GET", "POST"])
@@ -130,6 +139,9 @@ def logout():
     logout_user()
     return redirect(url_for("login"))
 
+@app.route("/")
+def home():
+    return "Flask App is Running!"
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True)  # ✅ Enables error messages in the browser
